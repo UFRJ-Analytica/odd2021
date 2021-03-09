@@ -87,7 +87,7 @@ def get_mun_ids(as_dict=False , data_path="./Dados"):
             return pd.read_csv(f"{data_path}/id_municipios.csv", sep=";").set_index("id_municipio")
 
     except FileNotFoundError:
-        id_mun = get_data("", query="SELECT DISTINCT id_municipio, municipio, microrregiao, mesorregiao, sigla_uf, uf, regiao FROM `basedosdados.br_bd_diretorios_brasil.municipio`", save=False).set_index("id_municipio")
+        id_mun = get_data("", query="SELECT DISTINCT id_municipio, municipio, microrregiao, mesorregiao, sigla_uf, uf, regiao FROM `basedosdados.br_bd_diretorios_brasil.municipio`", save=False)
 
         if as_dict:
             dic = {}
@@ -108,7 +108,8 @@ def get_mun_ids(as_dict=False , data_path="./Dados"):
             return dic
         else:
             id_mun.to_csv(f"{data_path}/id_municipios.csv", sep=";", index=False)
-            return id_mun
+            return id_mun.set_index("id_municipio")
+
 
 def get_br_ms_sim_ids(as_dict=False, data_path="./Dados"):
     """Gets br_ms_sim's causa_basica ids.
@@ -130,7 +131,7 @@ def get_br_ms_sim_ids(as_dict=False, data_path="./Dados"):
 
     except FileNotFoundError:
         raw_file = pd.read_csv("https://raw.githubusercontent.com/basedosdados/mais/master/bases/br_ms_sim/dictionaries/CID10/CID-10-SUBCATEGORIAS.CSV", sep=";", encoding="ANSI")
-        df = raw_file[["SUBCAT","DESCRICAO"]].rename(columns={"SUBCAT": "causa_basica", "DESCRICAO": "descricao"}).set_index("causa_basica")
+        df = raw_file[["SUBCAT","DESCRICAO"]].rename(columns={"SUBCAT": "causa_basica", "DESCRICAO": "descricao"})
         if as_dict:
             dic = {}
 
@@ -143,4 +144,4 @@ def get_br_ms_sim_ids(as_dict=False, data_path="./Dados"):
             return dic
         else:
             df.to_csv(f"{data_path}/CID-10-BR_MS_SIM.csv", sep=";", index=False)
-            return df
+            return df.set_index("causa_basica")
