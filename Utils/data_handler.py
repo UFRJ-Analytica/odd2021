@@ -5,13 +5,14 @@ import pandas as pd
 import basedosdados as bd
 from dotenv import load_dotenv
 
-def get_data(filename, extension="csv", data_path="./Dados"):
+def get_data(filename, extension="csv", data_path="./Dados", query=None):
     """Gets data from specified data_path or `basedosdados API`
 
     Args:
         filename (str): The name of the file you want to get
         extension (str): The extension of the file you want to get [csv/json]
-        data_path (str): data_path to the data folder
+        data_path (str): The path to the data folder
+        query (str): A query to execute retrieving data
     """
 
     # Checks for valid extension arg and creates file helper variables
@@ -23,10 +24,10 @@ def get_data(filename, extension="csv", data_path="./Dados"):
     makedirs(data_path, exist_ok=True)
 
     # Checks for file existence in data_path. Loads it if found or creates it
-    if file in listdir(data_path):
+    if file in listdir(data_path) and query==None:
         if extension == "csv":
             try:
-                df = pd.read_csv(file_path)
+                df = pd.read_csv(file_path, sep=";")
                 return df
             except Exception as e:
                 print(e)
@@ -40,10 +41,15 @@ def get_data(filename, extension="csv", data_path="./Dados"):
                 return None
     else:
         load_dotenv("./.env")
-        dataset_id, table_id = filename.split(".")
-        df = bd.read_table(dataset_id = dataset_id, table_id = table_id, billing_project_id = environ.get("PROJECT_ID"))
+        
+        if query == None:
+            dataset_id, table_id = filename.split(".")
+            df = bd.read_table(dataset_id = dataset_id, table_id = table_id, billing_project_id = environ.get("PROJECT_ID"))
+        else:
+            df = bd.read_sql(query = query, billing_project_id = environ.get("PROJECT_ID"))
+
         if extension == "csv":
-            df.to_csv(file_path, index=False)
+            df.to_csv(file_path, sep=";", index=False)
             return df
         elif extension == "json":
             result = df.to_json(orient="index")
