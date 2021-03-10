@@ -28,7 +28,7 @@ def get_data(filename, extension="csv", data_path="./Dados", query=None, save=Tr
     makedirs(data_path, exist_ok=True)
 
     # Checks for file existence in data_path. Loads it if found or creates it
-    if file in listdir(data_path) and query==None:
+    if file in listdir(data_path):
         if extension == "csv":
             try:
                 df = pd.read_csv(file_path, sep=";")
