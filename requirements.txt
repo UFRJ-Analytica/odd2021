@@ -1,8 +1,6 @@
 pandas
-basedosdados
-python-dotenv
 seaborn
 matplotlib
+basedosdados
 ipywidgets
-plotly
-ipykernel
+python-dotenv
