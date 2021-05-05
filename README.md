@@ -1,6 +1,7 @@
 # Open Data Day 2021
 Repositório do Desafio da Base dos Dados - Open Data Day
 
+ <img src="https://user-images.githubusercontent.com/53838883/117144299-27cf8100-ad88-11eb-9f5c-7e442eb3ffbe.png" min-width="200px" max-width="300px" width="250px" top= "0 px" align="right">
 
 
 ### Tema: Como dados abertos podem contribuir para o desenvolvimento igualitário no Brasil?
